@@ -6,7 +6,7 @@ This platform basically focused on appointment handling for an organization. Eff
 
 * [Sravan Azmeera](https://github.com/azmeerasravan/CIS641-HW2-AZMEERA)  (FrontEnd Developer)
 * [Sridevi Bommidi](https://github.com/sridevi-bommidi/CIS641-HW2-Bommidi) (Database Management)
-* Member 3 (Role 5, Role 6)
+* [Sai Bharadwaj Gundeboina](https://github.com/Sai-2019/CIS641-HW2-GUNDEBOINA) (BackEnd Developer)
 
 ## Prerequisites
 
