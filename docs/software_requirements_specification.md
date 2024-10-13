@@ -32,14 +32,21 @@ The platform will be built using the MERN stack:
   
 #### R2: Role-Based Access Control
 - The system shall provide different access levels (Admin, Department Staff, End User) depending on the user's role.
-  
-#### R3: Appointment Booking
+
+#### R3: Consultation category selection:
+- User shall be able to click on category tiles in the home page and schedule an appointment. 
+
+#### R4: Appointment Booking
 - End users shall be able to book appointments and wait for the acceptance.
   
-#### R4: Appointment Modification & Cancellation
+#### R5: Appointment Modification & Cancellation
 - The system shall allow users to modify or cancel their appointments before a predefined cutoff time (say, 6hrs before the schedule time).
+
+#### R6: Doctor Notes:
+- User (Doctor) shall be able to post/write observations post consultation.
+- User ( Patient/ client) shall be able receive the notes post consultation.
   
-#### R5: Department Notifications
+#### R6: Department Notifications
 - The system shall notify department staff of new, modified, or canceled appointments in real-time.
 
 ### 2.3 Non-Functional Requirements
@@ -55,6 +62,10 @@ The platform will be built using the MERN stack:
 
 #### NFR4: Scalability
 - The platform shall be scalable to support additional departments or increased user load.
+
+#### NFR5: Query Response Time: 
+- User shall be able to receive update on his/her query within 24hrs.
+
 
 ## 3. External Interface Requirements
 
