@@ -1,0 +1,41 @@
+/* HomePage.css */
+.homepage-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+  }
+  
+  .homepage-title {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .login-button, .register-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: white;
+    background: linear-gradient(135deg, #ff6b6b, #f94d6f);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .login-button:hover, .register-button:hover {
+    background: linear-gradient(135deg, #ff8b8b, #f94d6f);
+  }
+  
+  .login-button:focus, .register-button:focus {
+    outline: none;
+  }
+  
