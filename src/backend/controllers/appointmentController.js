@@ -3,24 +3,35 @@ const Appointment = require('../models/Appointment');
 // Create a new appointment
 exports.createAppointment = async (req, res) => {
   try {
-    const { name, contact, mailId, date, category } = req.body;
+    const { formData: {name, contact, appointmentDate, userId,  maild, category} } = req.body;
     const newAppointment = new Appointment({
       name,
       contact,
-      mailId,
-      date,
-      category,
-      createdBy: req.user.userId
+      mailId: maild,
+      date: new Date(appointmentDate),
+      category: category.category,
+      createdBy: userId
     });
     await newAppointment.save();
     res.status(201).json({ message: 'Appointment booked successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to book appointment', error });
+    res.status(500).json({ message: `Failed to book appointment', ${error.message}` });
   }
 };
 
 // Get all appointments
 exports.getAppointments = async (req, res) => {
+  try {
+    const { userId } = req.query; // Get userId from query parameters
+    const appointments = await Appointment.find({ createdBy: userId }); // Use createdBy to filter
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve appointments', error });
+  }
+};
+
+// Get all appointments for doctor
+exports.getDoctorAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find();
     res.status(200).json(appointments);
@@ -29,14 +40,29 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
+
 // Update appointment status (doctor/admin only)
 exports.updateAppointmentStatus = async (req, res) => {
   try {
-    if (req.user.category !== 'doctor' && req.user.category !== 'admin') {
+    const { status, user } = req.body;
+    const { appointmentId } = req.params;
+
+    // Check if the user is authorized (doctor or admin)
+    if (user !== 'doctor' && user !== 'admin') {
       return res.status(403).json({ message: 'Permission denied' });
     }
-    const { appointmentId, status } = req.body;
-    const appointment = await Appointment.findByIdAndUpdate(appointmentId, { status }, { new: true });
+
+    // Update the appointment status
+    const appointment = await Appointment.findByIdAndUpdate(
+      appointmentId,
+      { status },
+      { new: true }
+    );
+
+    if (!appointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
     res.status(200).json({ message: 'Appointment status updated', appointment });
   } catch (error) {
     res.status(500).json({ message: 'Failed to update appointment status', error });

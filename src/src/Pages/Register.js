@@ -1,29 +1,64 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Register = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Registering:', { email, password, confirmPassword });
+
+    if (password !== confirmPassword) {
+      setError("Passwords don't match");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+        setError('');
+        console.log('User registered successfully:', data);
+        navigate('/login')
+      } else {
+        setError(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      setError('An error occurred during registration');
+      console.error(err);
+    }
   };
 
   return (
     <div className="auth-container">
       <div className="form-wrapper">
         <h2>Register</h2>
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">Registration successful!</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label>Username</label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="Enter your email"
+              placeholder="Enter your username"
             />
           </div>
           <div className="form-group">
@@ -47,6 +82,7 @@ const Register = () => {
             />
           </div>
           <button type="submit" className="submit-button">Register</button>
+          <p style={{ display: 'flex', justifyContent: 'center'}}> Already a user? <a href='/login'> Login </a></p>
         </form>
       </div>
     </div>

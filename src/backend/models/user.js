@@ -4,7 +4,12 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  category: { type: String, enum: ['patient', 'doctor', 'admin'], default: 'patient' }
+  category: { type: String, enum: ['patient', 'doctor', 'admin'], default: 'patient' },
+  email: { type: String, required: false },        // New optional field
+  contactNumber: { type: String, required: false }, // New optional field
+  city: { type: String, required: false },          // New optional field
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 userSchema.pre('save', async function (next) {
@@ -15,6 +20,11 @@ userSchema.pre('save', async function (next) {
   } catch (err) {
     next(err);
   }
+});
+
+userSchema.pre('save', function (next) {
+  this.updatedAt = Date.now();
+  next();
 });
 
 userSchema.methods.comparePassword = function (password) {

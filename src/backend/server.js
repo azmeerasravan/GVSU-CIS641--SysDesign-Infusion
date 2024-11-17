@@ -22,10 +22,10 @@ app.use(express.json());
 
 
 app.use('/api', userRoutes);
-app.use('/api', appointmentRoutes);
+app.use('/api/book', appointmentRoutes);
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://sridevibommidi12:<db_password>.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://sridevibommidi12:vff0HuzlcVXdPNIz@cluster0.oym73.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 

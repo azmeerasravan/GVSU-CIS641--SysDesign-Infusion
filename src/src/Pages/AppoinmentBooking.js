@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Grid, Paper, Typography, Box } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './Navbar';
 
 const AppointmentBooking = () => {
@@ -12,8 +12,11 @@ const AppointmentBooking = () => {
   const [formData, setFormData] = useState({
     name: '',
     contact: '',
-    email: '',
-    appointmentDate: ''
+    username: location.state.user.username,
+    maild: '',
+    appointmentDate: '',
+    userId: location.state.user.id,
+    category: location.state || 'General Physician'
   });
 
   const handleInputChange = (e) => {
@@ -24,12 +27,22 @@ const AppointmentBooking = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically submit the form data to your backend API
-    console.log('Appointment Details:', formData);
-    alert(`Appointment booked for ${category}!`);
-    navigate('/');
+    const username = localStorage.getItem('username')
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/book/createAppointment`, {
+        username: username,
+        formData: formData
+      });
+      console.log('Appointment Details:', response.data);
+      navigate('/dashboard'); 
+      localStorage.setItem('username', username)
+      alert(`Appointment booked for ${category}!`);
+    } catch (err) {
+      alert(`Failed Appointment booking for ${category}!`);
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -75,9 +88,9 @@ const AppointmentBooking = () => {
                     required
                     fullWidth
                     label="Email Address"
-                    name="email"
-                    type="email"
-                    value={formData.email}
+                    name="maild"
+                    type="maild"
+                    value={formData.maild}
                     onChange={handleInputChange}
                   />
                 </Grid>

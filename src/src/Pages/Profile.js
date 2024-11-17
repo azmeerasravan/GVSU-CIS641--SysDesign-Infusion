@@ -1,65 +1,113 @@
-import React from 'react';
-import { Card, CardContent, Typography, Button, Grid, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
-const Profile = () => {
-  const navigate = useNavigate();
+const ProfilePage = () => {
+  const [profile, setProfile] = useState({ email: '', contactNumber: '', city: '', id: '' , category: '' });
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Placeholder data for the profile
-  const userData = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1234567890',
-    address: '123 Main St, Cityville',
+  const username = localStorage.getItem('username');
+  const navigate = useNavigate()
+  
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/${username}`);
+        setProfile(response.data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+    fetchProfile();
+  }, [username]);
+
+  const handleInputChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
-  // Handler for the Edit button
-  const handleEditClick = () => {
-    navigate('/profile/edit');
-  };
-
-  // Handler for the Appointments button
-  const handleAppointmentsClick = () => {
-    navigate('/appointments');
+  const handleSave = async () => {
+    try {
+      // Create a copy of the profile object to send as the payload
+      const updatedProfile = { ...profile };
+      await axios.put(`http://localhost:5000/api/${username}`, updatedProfile);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error saving profile:', error);
+    }
   };
 
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
-      <Grid item xs={12} sm={8} md={6}>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="div" gutterBottom>
-              Profile
-            </Typography>
-
-            {/* User Details */}
-            <Typography variant="body1" color="text.secondary">
-              <strong>Name:</strong> {userData.name}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              <strong>Email:</strong> {userData.email}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              <strong>Phone:</strong> {userData.phone}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              <strong>Address:</strong> {userData.address}
-            </Typography>
-
-            {/* Buttons: Edit and Appointments */}
-            <Box mt={4} display="flex" justifyContent="space-between">
-              <Button variant="contained" color="primary" onClick={handleEditClick}>
+    <>
+      <Navbar />
+      <Container maxWidth="sm">
+        <Box sx={{ mt: 4, p: 3, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 2 }}>
+          <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+            Profile
+          </Typography>
+          <Typography variant="h6" sx={{ textAlign: 'center', mb: 3 }}>
+            {username}
+          </Typography>
+          <Box component="form" noValidate autoComplete="off">
+            <TextField
+              label="Email"
+              name="email"
+              value={profile.email}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              disabled={!isEditing}
+            />
+            <TextField
+              label="Contact Number"
+              name="contactNumber"
+              value={profile.contactNumber}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              disabled={!isEditing}
+            />
+            <TextField
+              label="City"
+              name="city"
+              value={profile.city}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              disabled={!isEditing}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 3 }}>
+            {isEditing ? (
+              <Button variant="contained" color="primary" onClick={handleSave}>
+                Save
+              </Button>
+            ) : (
+              <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>
                 Edit
               </Button>
-              <Button variant="contained" color="secondary" onClick={handleAppointmentsClick}>
-                Appointments
+            )}
+            {isEditing ? (
+              <Button variant="contained" color="primary" onClick={handleSave}>
+                Cancel
               </Button>
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+            ) : (
+                profile.category === 'patient'?(
+                  <Button variant="contained" color="primary" onClick={() => navigate('/get-appointment', { state: { user: { ...profile } } } )}>
+                    Get Appointemnts
+                  </Button>
+                )
+                : null
+            )}
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
 };
 
-export default Profile;
+export default ProfilePage;

@@ -13,11 +13,7 @@ const registerUser = async (req, res) => {
           return res.status(400).json({ message: 'User already exists' });
         }
     
-        // Hash password and create a new user
-        console.log('Password before:', password)
-        const hashedPassword = await bcrypt.hash(password, 10);
-        console.log('Hashed Password:', hashedPassword)
-        const user = new User({ username, password: hashedPassword });
+        const user = new User({ username, password: password });
         await user.save();
     
         res.status(201).json({ message: 'User registered successfully' });
@@ -65,4 +61,38 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, updateUserRole };
+const getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      contactNumber: user.contactNumber,
+      city: user.city,
+      category: user.category,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const updateUserDetails = async (req, res) => {
+  const { email, contactNumber, city } = req.body;
+  try {
+    const user = await User.findOneAndUpdate(
+      { username: req.params.username },
+      { email, contactNumber, city, updatedAt: Date.now() },
+      { new: true, runValidators: true }
+    );
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+module.exports = { registerUser, loginUser, updateUserRole, getUserDetails, updateUserDetails };
