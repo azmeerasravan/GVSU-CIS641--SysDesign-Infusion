@@ -1,86 +1,165 @@
 # Software Requirements Specification (SRS)
 
-## 1. Introduction
+# Overview
 
-### 1.1 Purpose
-The purpose of this document is to define the software requirements for the **Centralized Appointment Management Platform**. This platform is designed to streamline the scheduling, management, and tracking of appointments within an organization across multiple departments.
+This document serves as the Software Requirements Specification (SRS) for the **Appointment Managemnent System**. This is designed to streamline hospital operations by providing role-based access, efficient appointment managementand other systems that correaltes. This document outlines the functional and non-functional requirements, change management plan, traceability links, and associated software artifacts.
 
-### 1.2 Scope
-This platform will handle all aspects of appointment management, including booking, modification, cancellation, and inquiries. The system will provide real-time interactions between users and departments, improving the productivity and efficiency of organizational processes.
+# Software Requirements
 
-### 1.3 Project Overview
-The system will primarily serve organizations that require seamless handling of appointments. It will consist of user roles like **Admin**, **Department Staff**, and **End Users**. End Users can book appointments, view availability, and receive notifications. Department Staff can manage appointments, while Admins oversee system operations.
+This section describes the functional and non-functional requirements for the project.
 
-### 1.4 Glossary
-- **Admin**: The user responsible for system administration and configuration.
-- **Department Staff**: Users managing department-specific appointments.
-- **End User**: Users booking appointments.
+## Functional Requirements
 
-## 2. System Overview
+### Appointment Management
 
-### 2.1 System Architecture
-The platform will be built using the MERN stack:
-- **MongoDB**: NoSQL database to store user information, appointments, and logs.
-- **ExpressJS**: Backend framework for handling HTTP requests.
-- **ReactJS**: Frontend library for a dynamic and responsive user interface.
-- **NodeJS**: Runtime environment to manage backend logic.
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| FR1  | The system shall allow patients to book appointments. |
+| FR2  | The system shall allow doctors to accept or reject appointments. |
+| FR3  | Patients shall be able to edit/reschedule or cancel appointments. |
+| FR4  | Admins shall be able to view all appointments.         |
+| FR5  | The system shall allow doctors to update appointment status |
 
-### 2.2 Functional Requirements
+### Role-Based Access Control
 
-#### R1: User Registration & Authentication
-- The system shall allow users to register, log in, and log out of their accounts.
-  
-#### R2: Role-Based Access Control
-- The system shall provide different access levels (Admin, Department Staff, End User) depending on the user's role.
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| FR6  | The system shall support roles: Admin, Doctor, Patient. |
+| FR7  | Admins shall manage user roles and permissions.        |
+| FR8  | Patients shall only access their own appointment data. |
+| FR9  | Doctors shall only access appointments data.   |
+| FR10 | Admins shall have full access to the system.           |
 
-#### R3: Consultation category selection:
-- User shall be able to click on category tiles in the home page and schedule an appointment. 
+### Profile management
 
-#### R4: Appointment Booking
-- End users shall be able to book appointments and wait for the acceptance.
-  
-#### R5: Appointment Modification & Cancellation
-- The system shall allow users to modify or cancel their appointments before a predefined cutoff time (say, 6hrs before the schedule time).
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| FR11  | The system shall allow users to view their profile information. |
+| FR12  | Users shall be able to update their profile details, including email, contact number, and city.        |
+| FR13  | Admins shall assign roles such as "doctor" or "admin" to registered users. |
+| FR14  | Users shall be able to upload a profile picture.   |
+| FR15  | The system shall allow users of update profile information.           |
 
-#### R6: Doctor Notes:
-- User (Doctor) shall be able to post/write observations post consultation.
-- User ( Patient/ client) shall be able receive the notes post consultation.
-  
-#### R6: Department Notifications
-- The system shall notify department staff of new, modified, or canceled appointments in real-time.
+### Category-wise Appointment Selection
 
-### 2.3 Non-Functional Requirements
-
-#### NFR1: Performance
-- The system shall handle concurrent users without performance degradation.
-
-#### NFR2: Security
-- All sensitive user data shall be encrypted both at rest and in transit.
-
-#### NFR3: Availability
-- The system shall maintain an uptime of at least 99.9%.
-
-#### NFR4: Scalability
-- The platform shall be scalable to support additional departments or increased user load.
-
-#### NFR5: Query Response Time: 
-- User shall be able to receive update on his/her query within 24hrs.
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| FR16  | The system shall display a list of categories (e.g., General, Cardiology, Pediatrics). |
+| FR17  | Patients shall select a category to view appointment form for respective category.       |
+| FR18  | The system shall show the patient's chosen category in the booking form. |
+| FR19  | Admins shall manage the list of categories. |
+| FR20  | The system shall allow only authorized users to create appointments    |
 
 
-## 3. External Interface Requirements
+#### User Login & Registration Service
 
-### 3.1 User Interface
-- The web application will have a user-friendly interface accessible via desktop and mobile devices.
-- The homepage shall display an overview of the system, with cards representing different departments for appointment booking.
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| FR21 | Users shall register with a unique username and password. |
+| FR22 | The system shall validate login credentials for all users. |
+| FR23 | Passwords shall be securely hashed during registration. |
+| FR24 | The system shall allow admins to deactivate user accounts. |
+| FR25 | Users shall be redirected to their respective dashboards based on roles. |
 
-### 3.2 Hardware Interface
-- The system shall run on cloud-based servers with scalable resources based on load requirements.
+## Non-Functional Requirements
 
-## 4. Software Interface
-- The system will integrate with third-party APIs for sending notifications and reminders via email or SMS.
+### Performance
 
-## 5. Database Design
-- **Users Collection**: Contains user information, including roles.
-- **Appointments Collection**: Tracks all appointments booked, modified, or canceled.
-- **Notifications Collection**: Stores all notification logs.
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| NFR1 | The system shall handle 100 concurrent users efficiently. |
+| NFR2 | Appointment booking shall not exceed 2 seconds response time. |
+| NFR3 | Data retrieval shall not exceed 1 second for 1,000 records. |
+| NFR4 | The system shall process appointment schedules in real-time. |
+| NFR5 | All APIs shall respond within an average of 500ms.     |
 
+### Security
+
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| NFR6 | The system shall encrypt all sensitive data in transit. |
+| NFR7 | User authentication shall be token-based (JWT).        |
+| NFR8 | Access to patient records shall require role-based permissions. |
+| NFR9 | The system shall log all unauthorized access attempts. |
+| NFR10| Passwords shall be stored using secure hashing (bcrypt).|
+
+### Usability
+
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| NFR11| The user interface shall be intuitive and responsive.  |
+| NFR12| The system shall provide tooltips for complex features. |
+| NFR13| The system shall be accessible to differently-abled users. |
+| NFR14| User feedback shall be integrated for continuous improvements. |
+| NFR15| Training materials shall be provided for all user roles.|
+
+### Scalability
+
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| NFR16| The system shall scale to support up to 10,000 users.  |
+| NFR17| The database shall be horizontally scalable.           |
+| NFR18| The backend shall support microservices architecture.  |
+| NFR19| The system shall allow modular feature upgrades.       |
+| NFR20| The system shall use a load balancer for high availability.|
+
+### Maintainability
+
+| ID   | Requirement                                            |
+|------|--------------------------------------------------------|
+| NFR21| The codebase shall be modular and well-documented.     |
+| NFR22| Unit tests shall cover at least 80% of the code.       |
+| NFR23| CI/CD pipelines shall be implemented for deployments. |
+| NFR24| Logs shall be centralized for easier debugging.        |
+| NFR25| Regular system updates shall be automated.            |
+
+
+# Change Management Plan
+
+To ensure smooth adoption of the Hospital Management System:
+
+1. **Training**:
+   - Conduct role-specific training sessions for Admins, Doctors, and Patients.
+   - Provide video tutorials and user manuals.
+
+2. **Integration**:
+   - Perform compatibility tests with existing systems.
+   - Develop APIs for seamless integration with third-party tools.
+
+3. **Issue Resolution**:
+   - Establish a dedicated support team for troubleshooting.
+   - Use a ticketing system to prioritize and resolve issues.
+
+4. **Feedback Mechanism**:
+   - Collect user feedback during pilot runs.
+   - Implement a feedback loop for continuous improvement.
+
+5. **Rollout Plan**:
+   - Begin with a small-scale pilot deployment.
+   - Gradually roll out the system across all departments.
+
+
+# Traceability Links
+
+## Use Case Diagram Traceability
+
+| Artifact ID  | Artifact Name              | Requirement ID      |
+|--------------|----------------------------|---------------------|
+| UC1          | Select Category and Book Appointment | FR16, FR17, FR18 |
+| UC1          | View Created Appointments by patient  | FR4          |
+| UC1          | Edit or Cancel Appointments| FR3   |
+| UC2          | Confirm/Reject/mark as complete Appointments| FR5           |
+| UC3          | Update User Role           | FR7         |
+| UC2          | Manage All Appointments by doctor   | FR4, FR9            |
+
+
+## Class Diagram Traceability
+
+| Artifact Name          | Requirement ID      |
+|------------------------|---------------------|
+| CD      | FR1 - FR25     |
+
+
+# README
+
+Refer to the [README](https://github.com/your-repo/README.md) for installation and usage instructions.
