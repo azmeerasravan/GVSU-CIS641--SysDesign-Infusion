@@ -10,12 +10,12 @@ This platform basically focused on appointment handling for an organization. Eff
 
 ## Prerequisites
 1. **Frontend**:
-   - [Node.js](https://nodejs.org/) (v16 or later)
+   - ReactJs
    - [npm](https://www.npmjs.com/) (v8 or later)
 
 2. **Backend**:
-   - [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html) (v11 or later)
-   - [Spring Boot](https://spring.io/projects/spring-boot) framework setup
+   - [Node.js](https://nodejs.org/) (v16 or later)
+   - ExpressJs
 
 3. **Database**:
    - [MongoDB](https://www.mongodb.com/)
