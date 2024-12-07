@@ -145,21 +145,37 @@ To ensure smooth adoption of the Hospital Management System:
 
 | Artifact ID  | Artifact Name              | Requirement ID      |
 |--------------|----------------------------|---------------------|
-| UC1          | Select Category and Book Appointment | FR16, FR17, FR18 |
-| UC1          | View Created Appointments by patient  | FR4          |
-| UC1          | Edit or Cancel Appointments| FR3   |
-| UC2          | Confirm/Reject/mark as complete Appointments| FR5           |
-| UC3          | Update User Role           | FR7         |
-| UC2          | Manage All Appointments by doctor   | FR4, FR9            |
+| [UC1](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Usecase-Diagrams/UC1.png)          | Select Category and Book Appointment | FR16, FR17, FR18 |
+| [UC1](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Usecase-Diagrams/UC1.png)          | View Created Appointments by patient  | FR4          |
+| [UC1](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Usecase-Diagrams/UC1.png)          | Edit or Cancel Appointments| FR3   |
+| [UC2](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Usecase-Diagrams/UC2.png)          | Confirm/Reject/mark as complete Appointments| FR5           |
+| [UC3](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Usecase-Diagrams/UC3.png)         | Update User Role           | FR7         |
+| [UC2](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Usecase-Diagrams/UC2.png)           | Manage All Appointments by doctor   | FR4, FR9            |
 
 
 ## Class Diagram Traceability
 
 | Artifact Name          | Requirement ID      |
 |------------------------|---------------------|
-| CD      | FR1 - FR25     |
+| [CD](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/ClassDiagrams/CD.png)      | FR1 - FR25     |
+
+## Activity Diagram Traceability
+
+| Artifact ID            | Artifact Name            | Requirement ID  |
+|------------------------|--------------------------|-----------------|
+| [Activity](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Activity-Diagram/Activity.png)                    | Appointment Management Flow | FR1 - FR25  |
+
+
+# Software Artifacts
+
+Below are links to all project artifacts:
+
+- [Presentation](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/docs/Appointment-Scheduler.pdf)
+- [Class Diagram](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/ClassDiagrams/CD.png)
+- [Activity Diagram](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/artifacts/Activity-Diagram/Activity.png)
+- [Code Repository](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion)
 
 
 # README
 
-Refer to the [README](https://github.com/your-repo/README.md) for installation and usage instructions.
+Refer to the [README](https://github.com/azmeerasravan/GVSU-CIS641--SysDesign-Infusion/blob/main/README.md) for installation and usage instructions.
