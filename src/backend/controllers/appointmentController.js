@@ -3,7 +3,7 @@ const Appointment = require('../models/Appointment');
 // Create a new appointment
 exports.createAppointment = async (req, res) => {
   try {
-    const { formData: {name, contact, appointmentDate, userId,  maild, category} } = req.body;
+    const { formData: { name, contact, appointmentDate, userId, maild, category } } = req.body;
     const newAppointment = new Appointment({
       name,
       contact,
@@ -72,14 +72,15 @@ exports.updateAppointmentStatus = async (req, res) => {
 
 exports.updateAppointment = async (req, res) => {
   try {
-    const appointment = await Appointment.findOne({ _id: req.params.id, createdBy: req.user.userId });
+    const appointment = await Appointment.findOne({ _id: req.params.id });
     if (!appointment) return res.status(404).json({ message: 'Appointment not found' });
 
-    const { name, contact, mailId, date, category } = req.body;
+    const { name, contact, mailId, date, category, status } = req.body;
     appointment.name = name || appointment.name;
     appointment.contact = contact || appointment.contact;
     appointment.mailId = mailId || appointment.mailId;
     appointment.date = date || appointment.date;
+    appointment.status = status || appointment.status;
     appointment.category = category || appointment.category;
     await appointment.save();
 

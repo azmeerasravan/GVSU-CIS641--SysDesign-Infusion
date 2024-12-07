@@ -4,24 +4,24 @@ const bcrypt = require('bcrypt')
 
 // Register a new user
 const registerUser = async (req, res) => {
-    try {
-        const { username, password } = req.body;
-    
-        // Check if user already exists
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
-          return res.status(400).json({ message: 'User already exists' });
-        }
-    
-        const user = new User({ username, password: password });
-        await user.save();
-    
-        res.status(201).json({ message: 'User registered successfully' });
-      } catch (error) {
-        console.error('Error registering user:', error);
-        res.status(500).json({ message: 'Server error' });
-      }
-    
+  try {
+    const { username, password } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const user = new User({ username, password: password });
+    await user.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+
 };
 
 // Login user
@@ -43,11 +43,10 @@ const loginUser = async (req, res) => {
 
 // Update user
 const updateUserRole = async (req, res) => {
-  const { id } = req.params;
-  const { category } = req.body;
+  const { username, category } = req.body;
 
   try {
-    const user = await User.findById(id);
+    const user = await User.findOne({ username: username });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -80,6 +79,28 @@ const getUserDetails = async (req, res) => {
   }
 };
 
+const getUserByCategory = async (req, res) => {
+  try {
+    const { category } = req.body
+    const users = await User.find({ category: category });
+    if (!users) return res.status(400).json({ error: 'No not found' });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  const { category } = req.body;
+  try {
+    const users = await User.find({ category: category })
+    res.json(users)
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to get the users' });
+  }
+
+}
+
 const updateUserDetails = async (req, res) => {
   const { email, contactNumber, city } = req.body;
   try {
@@ -95,4 +116,4 @@ const updateUserDetails = async (req, res) => {
   }
 }
 
-module.exports = { registerUser, loginUser, updateUserRole, getUserDetails, updateUserDetails };
+module.exports = { registerUser, loginUser, updateUserRole, getUserDetails, updateUserDetails, getAllUsers, getUserByCategory };

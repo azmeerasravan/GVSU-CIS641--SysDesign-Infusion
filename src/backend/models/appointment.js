@@ -6,7 +6,7 @@ const appointmentSchema = new mongoose.Schema({
   mailId: { type: String, required: true },
   date: { type: Date, required: true },
   category: { type: String, required: true },
-  status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+  status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 });
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Grid, Paper, Box, Button, Card, CardContent } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import Change from '@mui/icons-material/ChangeCircle'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -25,7 +26,7 @@ const MainPage = () => {
       const { data } = await axios.get(`http://localhost:5000/api/${username}`);
       setUser(data);
 
-      if (data.category === 'doctor') {
+      if (data.category === 'doctor' || data.category === 'admin') {
         // Fetch appointments for the doctor
         const appointmentsData = await axios.get(`http://localhost:5000/api/book/getDoctorAppointments`);
         setAppointments(appointmentsData.data);
@@ -58,6 +59,18 @@ const MainPage = () => {
       console.error('Error updating appointment:', error);
     }
   };
+
+  const handleUpdate =  () => navigate('/updateUser')
+
+  const updateUserRole = async (userId, role) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/update-category`, { role: role, user: userId });
+      console.log(response)
+      alert('Role updated successfully')
+    } catch (error) {
+      console.error('Error updating appointment:', error);
+    }
+  };
   const handleCompleteAppointment = async (appointmentId) => {
     try {
       await axios.put(`http://localhost:5000/api/book/status/${appointmentId}`, { status: 'complete', user: user.category });
@@ -66,7 +79,7 @@ const MainPage = () => {
       console.error('Error updating appointment:', error);
     }
   };
-  
+
   const handleRejectAppointment = async (appointmentId) => {
     try {
       await axios.put(`http://localhost:5000/api/book/status/${appointmentId}`, { status: 'rejected', user: user.category });
@@ -75,7 +88,7 @@ const MainPage = () => {
       console.error('Error updating appointment:', error);
     }
   };
-  
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -87,6 +100,11 @@ const MainPage = () => {
           <IconButton color="inherit" onClick={handleProfileClick}>
             <AccountCircleIcon />
           </IconButton>
+          { (user?.category === 'admin') && 
+            <IconButton color="inherit" onClick={handleUpdate}>
+              <Change />
+            </IconButton>
+          }
           <IconButton color="inherit" onClick={handleSignOut}>
             <ExitToAppIcon />
           </IconButton>
@@ -121,7 +139,7 @@ const MainPage = () => {
         </Grid>
       )}
 
-      {(user?.category === 'doctor' || user?.category === 'admin' )&& (
+      {(user?.category === 'doctor' || user?.category === 'admin') && (
         <Grid container spacing={4} justifyContent="center" alignItems="center" sx={{ mt: 4 }}>
           {appointments.map((appointment) => (
             <Grid item xs={12} sm={6} md={4} key={appointment._id}>
@@ -134,24 +152,24 @@ const MainPage = () => {
                   <Typography variant="body1">Status: {appointment.status}</Typography>
                   {
                     appointment.status !== 'complete' ?
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-around' }}>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => handleAcceptAppointment(appointment._id)}
-                        disabled={appointment.status === 'accepted' || appointment.status === 'rejected' || appointment.status === 'complete'}
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleRejectAppointment(appointment._id)}
-                        disabled={appointment.status === 'accepted' || appointment.status === 'rejected' || appointment.status === 'complete'}
-                      >
-                        Reject
-                      </Button>
-                    </Box>: null
+                      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-around' }}>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={() => handleAcceptAppointment(appointment._id)}
+                          disabled={appointment.status === 'accepted' || appointment.status === 'rejected' || appointment.status === 'complete'}
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleRejectAppointment(appointment._id)}
+                          disabled={appointment.status === 'accepted' || appointment.status === 'rejected' || appointment.status === 'complete'}
+                        >
+                          Reject
+                        </Button>
+                      </Box> : null
                   }
                   <br></br>
                   {appointment.status === 'accepted' ? (

@@ -9,7 +9,7 @@ const Bookings = () => {
   const [loading, setLoading] = useState(true);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [currentBooking, setCurrentBooking] = useState(null);
-  const [editedDescription, setEditedDescription] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state?.user;
@@ -39,7 +39,8 @@ const Bookings = () => {
 
   const handleEditClick = (booking) => {
     setCurrentBooking(booking);
-    setEditedDescription(booking.description);
+    const formattedDate = new Date(booking.date).toISOString().slice(0, 16);
+    setAppointmentDate(formattedDate);
     setOpenEditDialog(true);
   };
 
@@ -54,7 +55,7 @@ const Bookings = () => {
 
   const handleEditSave = async () => {
     try {
-      const updatedBooking = { ...currentBooking, description: editedDescription };
+      const updatedBooking = { ...currentBooking, date: appointmentDate, status: 'pending' };
       await axios.put(`http://localhost:5000/api/book/updateAppointment/${currentBooking._id}`, updatedBooking);
       setBookings(bookings.map(booking => booking._id === currentBooking._id ? updatedBooking : booking));
       setOpenEditDialog(false);
@@ -96,18 +97,16 @@ const Bookings = () => {
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                       {booking.description}
                     </Typography>
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                      { booking.staus === 'accepted'?
-                      <>
-                      <Button variant="contained" color="primary" onClick={() => handleEditClick(booking)}>
-                        Edit
-                      </Button> 
-                      <Button variant="contained" color="secondary" onClick={() => handleDelete(booking._id)}>
-                        Delete
-                      </Button>
-                      </>: null
-                      }
-                    </Box>
+                    {(booking.status === 'rejected' || booking.status === 'pending') &&
+                      <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-evenly' }}>
+                        <Button variant="contained" color="primary" onClick={() => handleEditClick(booking)}>
+                          Edit
+                        </Button>
+                        <Button variant="contained" color="secondary" onClick={() => handleDelete(booking._id)}>
+                          Delete
+                        </Button>
+                      </Box>
+                    }
                   </CardContent>
                 </Card>
               </Grid>
@@ -129,11 +128,14 @@ const Bookings = () => {
           <TextField
             autoFocus
             margin="dense"
-            label="Description"
-            type="text"
+            label="Appointment Date"
+            type="datetime-local"
             fullWidth
-            value={editedDescription}
-            onChange={(e) => setEditedDescription(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={appointmentDate}
+            onChange={(e) => setAppointmentDate(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
