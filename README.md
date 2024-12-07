@@ -9,5 +9,25 @@ This platform basically focused on appointment handling for an organization. Eff
 * [Sai Bharadwaj Gundeboina](https://github.com/Sai-2019/CIS641-HW2-GUNDEBOINA) (BackEnd Developer)
 
 ## Prerequisites
+1. **Frontend**:
+   - [Node.js](https://nodejs.org/) (v16 or later)
+   - [npm](https://www.npmjs.com/) (v8 or later)
+
+2. **Backend**:
+   - [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html) (v11 or later)
+   - [Spring Boot](https://spring.io/projects/spring-boot) framework setup
+
+3. **Database**:
+   - [MongoDB](https://www.mongodb.com/)
+   - Ensure MongoDB is running and the database is created:
+     
 
 ## Run Instructions
+
+1. **Frontend**:
+   - Install required packages using `npm install`
+   - Deploy the frontend application using `npm start`
+   - Once the deployment is successful, find application at `http://localhost:3000/`
+2. **Backend**:
+   - Install required packages using `npm install`
+   - Deploy the backend application using `npm start`
